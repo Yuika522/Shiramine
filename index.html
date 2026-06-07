@@ -4,15 +4,17 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>白峰ゆいか - SPECIAL PHOTO BOOK 特設ページ</title>
+    <!-- Tailwind CSS -->
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <!-- 女の子らしい可愛い丸ゴシックフォント -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@500;700;900&display=swap" rel="stylesheet">
     
     <style>
-        /* 全体フォントを可愛い丸ゴシックに統一し、基本を太字(700)にします */
+        /* 全体フォントを可愛い丸ゴシックに統一 */
         body {
-            font-family: "Zen Maru Gothic", "Mochiyopop One", "TsukuARundGothic", "Comic Sans MS", sans-serif;
+            font-family: "Zen Maru Gothic", "Mochiyopop One", "TsukuARundGothic", sans-serif;
             font-weight: 700;
             background: linear-gradient(-45deg, #0b132b, #1c2541, #3a506b, #e0b1cb, #be95c4);
             background-size: 400% 400%;
@@ -39,17 +41,23 @@
             background: rgba(255, 255, 255, 0.05);
             backdrop-filter: blur(16px);
             -webkit-backdrop-filter: blur(16px);
-            border: 2px solid rgba(255, 255, 255, 0.1); /* 枠線も少し太くして丸みを出します */
+            border: 2px solid rgba(255, 255, 255, 0.1);
         }
         
         .glass-input {
             background: rgba(0, 0, 0, 0.3);
             border: 2px solid rgba(255, 255, 255, 0.15);
+            caret-color: #f48fb1; /* 入力ポインタの色をピンクに */
+            
+            /* 💡 【神機能】ポインタを出したまま、文字だけを「●」に安全に隠すブラウザ標準スタイル */
+            -webkit-text-security: disk;
+            text-security: disk;
         }
     </style>
 </head>
 <body class="text-slate-100 min-h-screen flex items-center justify-center tracking-wide transition-all duration-1000">
 
+    <!-- 【画面1】認証ゲート -->
     <div id="auth-gate" class="max-w-md w-full mx-4 glass-panel p-10 rounded-3xl shadow-2xl text-center">
         <h1 class="text-3xl font-black text-white tracking-widest mb-1 drop-shadow-[0_2px_10px_rgba(244,143,177,0.3)]">
             白峰ゆいか
@@ -62,17 +70,16 @@
         </p>
         
         <div class="space-y-5">
-            <div class="relative">
+            <div>
+                <!-- JSでの文字変換を廃止し、CSS側で安全に隠すことでポインタ不具合・再入力バグを完全消滅 -->
                 <input 
                     type="text" 
                     id="password-input" 
                     placeholder="合言葉を入力してね" 
-                    class="w-full px-5 py-3.5 glass-input rounded-2xl focus:outline-none focus:border-pink-300 text-transparent bg-clip-text focus:text-transparent text-center tracking-widest transition-all text-sm placeholder:text-slate-400 font-black z-10 relative bg-transparent"
-                    oninput="maskPassword(this)"
+                    class="w-full px-5 py-3.5 glass-input rounded-2xl focus:outline-none focus:border-pink-300 text-white text-center tracking-widest transition-all text-sm placeholder:text-slate-400 font-mono font-black"
                 >
-                <div id="password-mask" class="absolute inset-0 flex items-center justify-center pointer-events-none text-pink-200 text-base tracking-widest font-mono"></div>
+                <p id="error-message" class="text-rose-300 text-xs mt-3 hidden font-bold">※合言葉がちがうみたい…もういちど確かめてね。泣</p>
             </div>
-            <p id="error-message" class="text-rose-300 text-xs mt-3 hidden font-bold">※合言葉がちがうみたい…もういちど確かめてね。泣</p>
             
             <button 
                 onclick="checkPassword()" 
@@ -83,6 +90,7 @@
         </div>
     </div>
 
+    <!-- 【画面2】特設限定コンテンツ画面 -->
     <div id="gallery-content" class="w-full max-w-4xl mx-6 my-12 hidden">
         <header class="text-center mb-12">
             <h1 class="text-3xl font-black text-white tracking-wider leading-snug drop-shadow-[0_2px_15px_rgba(244,143,177,0.4)]">
@@ -95,6 +103,7 @@
             </div>
         </header>
 
+        <!-- 直筆メッセージ画像エリア -->
         <div class="glass-panel rounded-3xl p-6 max-w-xl mx-auto mb-10 border border-white/10 shadow-xl text-center">
             <span class="text-xs tracking-[0.1em] text-pink-300 font-black block mb-4">✨ Message from Yuika ✨</span>
             
@@ -108,6 +117,7 @@
             </div>
         </div>
 
+        <!-- PDFダウンロードセクション -->
         <div class="glass-panel rounded-3xl p-8 text-center max-w-xl mx-auto mb-16 border border-pink-400/30 shadow-lg shadow-pink-500/10">
             <h3 class="text-lg font-black text-white mb-2 tracking-wide">デジタル写真集（PDF版）🌸</h3>
             <p class="text-xs text-slate-300 mb-6 font-bold">高画質な写真集データをダウンロードして保存してね！</p>
@@ -115,7 +125,9 @@
             <div id="download-button-area"></div>
         </div>
 
+        <!-- プレビュー用オンラインギャラリー -->
         <main class="grid grid-cols-1 md:grid-cols-2 gap-12">
+            <!-- 写真1枚目 -->
             <div class="glass-panel rounded-3xl p-4 shadow-xl group hover:border-pink-300/30 transition-all duration-500">
                 <div class="aspect-[3/4] bg-slate-950/40 rounded-2xl overflow-hidden flex flex-col items-center justify-center relative">
                     <div class="secure-content absolute inset-0 bg-cover bg-center opacity-60 transition-transform duration-700 group-hover:scale-105" 
@@ -125,8 +137,9 @@
                 </div>
             </div>
 
+            <!-- 写真2枚目 -->
             <div class="glass-panel rounded-3xl p-4 shadow-xl group hover:border-pink-300/30 transition-all duration-500">
-                <div class="aspect-[3/4] bg-slate-950/40 rounded-2xl overflow-hidden flex flex-col items-center justify-center relative">
+                <div class="aspect-[3/4] bg-slate-950/40 rounded-xl overflow-hidden flex flex-col items-center justify-center relative">
                     <div class="secure-content absolute inset-0 bg-cover bg-center opacity-60 transition-transform duration-700 group-hover:scale-105" 
                          style="background-image: url('https://images.unsplash.com/photo-1529139574466-a303027c1d8b?q=80&w=800');">
                     </div>
@@ -140,26 +153,17 @@
         </footer>
     </div>
 
+    <!-- 画面切り替えロジック -->
     <script>
-        let actualPassword = "";
-
-        function maskPassword(input) {
-            actualPassword = input.value;
-            const maskArea = document.getElementById('password-mask');
-            
-            if (actualPassword.length > 0) {
-                maskArea.innerText = "●".repeat(actualPassword.length);
-            } else {
-                maskArea.innerText = "";
-            }
-        }
-
         function checkPassword() {
+            // 素直にinputの値をそのまま取得する形に戻したため、バグが起きえません
+            const inputVal = document.getElementById('password-input').value;
             const errorMsg = document.getElementById('error-message');
             const authGate = document.getElementById('auth-gate');
             const galleryContent = document.getElementById('gallery-content');
 
-            if (actualPassword.trim() === 'ゆいかだいすき') {
+            // 🔑 合言葉「yuika06」の判定
+            if (inputVal.trim() === 'yuika06') {
                 errorMsg.classList.add('hidden');
                 authGate.classList.add('hidden');
                 galleryContent.classList.remove('hidden');
@@ -175,10 +179,12 @@
                     </a>
                 `;
             } else {
+                // 間違えていたらエラーメッセージを表示
                 errorMsg.classList.remove('hidden');
             }
         }
 
+        // エンターキーの送信対応
         document.getElementById('password-input').addEventListener('keypress', function(e) {
             if (e.key === 'Enter') {
                 checkPassword();
